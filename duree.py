@@ -3,8 +3,9 @@ import random
 class Book(object):
     """docstring for Book."""
 
-    def __init__(self, articles, nouns, prepositions, adjectives, verbs, output_file):
+    def __init__(self, length, articles, nouns, prepositions, adjectives, verbs, output_file):
         super(Book, self).__init__()
+        self.intended_length = length
         self.articles = articles
         self.nouns = nouns
         self.prepositions = prepositions
@@ -14,12 +15,14 @@ class Book(object):
 
     def generate(self):
         """generate book"""
-        num_chapters = random.randrange(10,20)
+        chapter_num = 1
         book = ""
-        for i in range(num_chapters):
-            book += "<h1>Chapter {0}</h1>".format(i+1)
+        while (len(book.split(" ")) < self.intended_length):
+            book += "<h1>Chapter {0}</h1>".format(chapter_num)
             book += "<p>{0}</p>".format(self.gen_chapter())
             book += "<mbp:pagebreak/>"
+            chapter_num += 1
+            print(len(book.split(" ")))
         self.output_file.write(book)
         self.output_file.close()
         return len(book.split(" "))
@@ -70,5 +73,6 @@ if __name__ == '__main__':
     prepositions = ["in", "on", "from", "near"]
     adjectives = ["red", "green", "fast", "slow", "talented"]
     verbs = ["ate", "drank", "watched", "read", "wrote", "eats", "dreamed"]
-    duree = Book(articles, nouns, prepositions, adjectives, verbs, "output.html")
+    length = 3500000
+    duree = Book(length, articles, nouns, prepositions, adjectives, verbs, "output.html")
     print(duree.generate())
