@@ -19,9 +19,10 @@ class Book(object):
         for i in range(num_chapters):
             book += "<h1>Chapter {0}</h1>".format(i+1)
             book += "<p>{0}</p>".format(self.gen_chapter())
+            book += "<mbp:pagebreak/>"
         self.output_file.write(book)
         self.output_file.close()
-        return
+        return len(book.split(" "))
 
     def gen_chapter(self):
         """generate chapter"""
