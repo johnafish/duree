@@ -3,10 +3,11 @@ import random
 class Book(object):
     """docstring for Book."""
 
-    def __init__(self, articles, nouns, adjectives, verbs, output_file):
+    def __init__(self, articles, nouns, prepositions, adjectives, verbs, output_file):
         super(Book, self).__init__()
         self.articles = articles
         self.nouns = nouns
+        self.prepositions = prepositions
         self.adjectives = adjectives
         self.verbs = verbs
         self.output_file = open(output_file, "w")
@@ -47,18 +48,26 @@ class Book(object):
         noun = random.choice(self.nouns)
         return "{0} {1} {2}".format(article, adjective, noun)
 
+    def gen_prep_phrase(self):
+        """generate prepositional phrase"""
+        preposition = random.choice(self.prepositions)
+        noun_phrase = self.gen_noun_phrase()
+        return "{0} {1}".format(preposition, noun_phrase)
+
     def gen_verb_phrase(self):
         """generate noun phrase"""
         verb = random.choice(self.verbs)
         noun_phrase = self.gen_noun_phrase()
-        return "{0} {1}".format(verb, noun_phrase)
+        prep_phrase = self.gen_prep_phrase()
+        return "{0} {1} {2}".format(verb, noun_phrase, prep_phrase)
 
 
 if __name__ == '__main__':
-    random.seed(123456789)
+    random.seed(1234567890)
     articles = ["a", "the"]
     nouns = ["cat", "dog", "squid", "man", "cow", "boy", "girl"]
+    prepositions = ["in", "on", "from", "near"]
     adjectives = ["red", "green", "fast", "slow", "talented"]
     verbs = ["ate", "drank", "watched", "read", "wrote", "eats", "dreamed"]
-    duree = Book(articles, nouns, adjectives, verbs, "output.html")
+    duree = Book(articles, nouns, prepositions, adjectives, verbs, "output.html")
     print(duree.generate())
