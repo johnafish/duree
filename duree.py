@@ -9,6 +9,9 @@ TODO:
     * Allow for recursive phrase structures
     * Wider dictionary
     * Better selection of articles given nouns
+
+NOTES:
+    * A limit of 335000 seems to be around the maximum limit that KDP will take
 """
 import random
 
@@ -30,9 +33,9 @@ class Book(object):
         chapter_num = 1
         book = ""
         while len(book.split(" ")) < self.intended_length:
-            book += "<h1>Chapter {0}</h1>".format(chapter_num)
-            book += "<p>{0}</p>".format(self.gen_chapter())
-            book += "<mbp:pagebreak/>"
+            book += "<h1>Chapter {0}</h1>\n".format(chapter_num)
+            book += "<p>{0}</p>\n".format(self.gen_chapter())
+            book += "<mbp:pagebreak />\n"
             chapter_num += 1
             print(len(book.split(" ")))
         self.output_file.write(book)
@@ -87,5 +90,5 @@ if __name__ == '__main__':
         "adjectives": ["red", "green", "fast", "slow", "talented"],
         "verbs": ["ate", "drank", "watched", "read", "wrote", "eats", "dreamed"]
     }
-    DUREE = Book(5000, DICTIONARY, "output.html")
+    DUREE = Book(335000, DICTIONARY, "output.html")
     print(DUREE.generate())
