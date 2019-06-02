@@ -12,6 +12,7 @@ DETERMINERS = ["the", "this", "that", "my", "your", "his", "her", "its", "our", 
 ADJECTIVES = ["different", "important", "every", "large", "available", "popular", "able", "basic", "known", "various", "difficult", "hot", "red", "orange", "yellow", "green", "blue", "purple", "traditional", "old", "young", "cold"]
 ADVERBS = ["angrily", "accidentally", "anxiously", "coyly", "boldly", "honestly", "justly", "madly", "mysteriously"]
 NOUNS = ["people", "history", "way", "art", "world", "information", "map", "family", "government", "system", "computer", "meat", "year", "person"]
+VERBS = ["want", "use", "work", "call", "try", "ask", "need", "help", "talk", "move", "play", "believe", "dream", "like"]
 
 class Phrase(object):
     """docstring for Phrase."""
@@ -61,10 +62,21 @@ class NounPhrase(Phrase):
 class VerbPhrase(Phrase):
     """docstring for VerbPhrase."""
 
-    def __init__(self, arg):
+    def __init__(self):
         super(VerbPhrase, self).__init__()
-        self.arg = arg
+        self.verb = random.choice(VERBS)
+        self.num_adverbs = random.randrange(0,2)
+        self.noun_phrase = str(NounPhrase()) if random.random() < 0.5 else ""
+        self.populate()
+
+    def generate_adverbs(self):
+        self.adverbs = random.sample(ADVERBS, self.num_adverbs)
+        self.words += self.adverbs
+
+    def populate(self):
+        self.words = [self.verb, self.noun_phrase]
+        self.generate_adverbs()
 
 if __name__ == '__main__':
-    n = NounPhrase()
+    n = VerbPhrase()
     print(n)
