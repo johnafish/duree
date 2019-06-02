@@ -9,10 +9,10 @@ VOWELS = ["a", "e", "i", "o", "u"]
 
 #all regular and singular, for now
 DETERMINERS = ["the", "this", "that", "my", "your", "his", "her", "its", "our", "their", "one", "each", "every", "another"] #https://www.ef.com/ca/english-resources/english-grammar/determiners/
-ADJECTIVES = ["different", "important", "every", "large", "available", "popular", "able", "basic", "known", "various", "difficult", "hot", "red", "orange", "yellow", "green", "blue", "purple", "traditional", "old", "young", "cold"]
+ADJECTIVES = ["different", "important", "every", "large", "available", "popular", "able", "basic", "known", "difficult", "hot", "red", "orange", "yellow", "green", "blue", "purple", "traditional", "old", "young", "cold"]
 ADVERBS = ["angrily", "accidentally", "anxiously", "coyly", "boldly", "honestly", "justly", "madly", "mysteriously"]
 NOUNS = ["people", "history", "way", "art", "world", "information", "map", "family", "government", "system", "computer", "meat", "year", "person"]
-VERBS = ["want", "use", "work", "call", "try", "ask", "need", "help", "talk", "move", "play", "believe", "dream", "like"]
+VERBS = ["wanted", "used", "worked", "called", "tried", "asked", "needed", "helped", "talked", "moved", "played", "believed", "dreamed", "liked"]
 
 class Phrase(object):
     """docstring for Phrase."""
@@ -77,6 +77,18 @@ class VerbPhrase(Phrase):
         self.words = [self.verb, self.noun_phrase]
         self.generate_adverbs()
 
+class Sentence(Phrase):
+    """docstring for Sentence."""
+
+    def __init__(self):
+        super(Sentence, self).__init__()
+        self.noun_phrase = NounPhrase()
+        self.verb_phrase = VerbPhrase()
+        self.populate()
+
+    def populate(self):
+        self.words = self.noun_phrase.words + self.verb_phrase.words
+
 if __name__ == '__main__':
-    n = VerbPhrase()
+    n = Sentence()
     print(n)
