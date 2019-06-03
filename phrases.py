@@ -2,6 +2,15 @@
 Taking a lot of inspiration from
 http://faculty.washington.edu/cicero/370syntax.htm
 
+TODO:
+ - Abstract out all word forms, make text files with lots of words in them
+ - Fix NounPhrases within VerbPhrases (has extra space a lot)
+
+ https://www.englishclub.com/vocabulary/regular-verbs-list.htm
+ https://www.talkenglish.com/vocabulary/top-1500-nouns.aspx
+ https://gist.github.com/hugsy/8910dc78d208e40de42deb29e62df913
+ http://www.ashley-bovan.co.uk/words/partsofspeech.html
+
 """
 import random
 
@@ -66,7 +75,7 @@ class VerbPhrase(Phrase):
         super(VerbPhrase, self).__init__()
         self.verb = random.choice(VERBS)
         self.num_adverbs = random.randrange(0,2)
-        self.noun_phrase = str(NounPhrase()) if random.random() < 0.5 else ""
+        self.noun_phrase = str(NounPhrase())
         self.populate()
 
     def generate_adverbs(self):
@@ -74,7 +83,9 @@ class VerbPhrase(Phrase):
         self.words += self.adverbs
 
     def populate(self):
-        self.words = [self.verb, self.noun_phrase]
+        self.words.append(self.verb)
+        if random.random() < 0.5:
+            self.words.append(self.noun_phrase)
         self.generate_adverbs()
 
 class Sentence(Phrase):
