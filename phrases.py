@@ -4,8 +4,7 @@ http://faculty.washington.edu/cicero/370syntax.htm
 
 TODO:
  - Abstract out all word forms, make text files with lots of words in them
- - Fix NounPhrases within VerbPhrases (has extra space a lot)
-
+ - Fix "a"/"an"/etc
  https://www.englishclub.com/vocabulary/regular-verbs-list.htm
  https://www.talkenglish.com/vocabulary/top-1500-nouns.aspx
  https://gist.github.com/hugsy/8910dc78d208e40de42deb29e62df913
@@ -14,9 +13,8 @@ TODO:
 """
 import random
 
-VOWELS = ["a", "e", "i", "o", "u"]
-
 #all regular and singular, for now
+C_CONJ = ["and", "but", "for", "or", "so", "yet"] # Coordinating conjunctions
 DETERMINERS = ["the", "this", "that", "my", "your", "his", "her", "its", "our", "their", "one", "each", "every", "another"] #https://www.ef.com/ca/english-resources/english-grammar/determiners/
 ADJECTIVES = ["different", "important", "every", "large", "available", "popular", "able", "basic", "known", "difficult", "hot", "red", "orange", "yellow", "green", "blue", "purple", "traditional", "old", "young", "cold"]
 ADVERBS = ["angrily", "accidentally", "anxiously", "coyly", "boldly", "honestly", "justly", "madly", "mysteriously"]
@@ -31,7 +29,6 @@ class Phrase(object):
         self.words = []
 
     def __repr__(self):
-        print(self.words)
         return " ".join(self.words)
 
     def populate(self):
@@ -99,6 +96,12 @@ class Sentence(Phrase):
 
     def populate(self):
         self.words = self.noun_phrase.words + self.verb_phrase.words
+        # Coordinating conjunction
+        if random.random() < 0.25:
+            new_clause = Sentence()
+            conjunction = random.choice(C_CONJ)
+            self.words.append(conjunction)
+            self.words += new_clause.words
 
 if __name__ == '__main__':
     n = Sentence()
