@@ -99,6 +99,10 @@ class Sentence(Phrase):
             self.words.append(conjunction)
             self.words += new_clause.words
 
+    def __repr__(self):
+        content = " ".join(self.words) + "."
+        return content.capitalize()
+
 if __name__ == '__main__':
     n = Sentence()
     print(n)
