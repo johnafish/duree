@@ -32,12 +32,14 @@ class Book(object):
         """generate book"""
         chapter_num = 1
         book = ""
-        while len(book.split(" ")) < self.intended_length:
+        real_length = 0
+        while real_length < self.intended_length:
+            chapter = self.gen_chapter()
             book += "<h1>Chapter {0}</h1>\n".format(chapter_num)
-            book += "<p>{0}</p>\n".format(self.gen_chapter())
+            book += "<p>{0}</p>\n".format(chapter)
             book += "<mbp:pagebreak />\n"
             chapter_num += 1
-            print(len(book.split(" ")))
+            real_length += len(chapter.split(" "))
         self.output_file.write(book)
         self.output_file.close()
         return len(book.split(" "))
