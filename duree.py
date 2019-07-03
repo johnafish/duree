@@ -13,36 +13,42 @@ TODO:
 NOTES:
     * A limit of 335000 seems to be around the maximum limit that KDP will take
 """
-import random
+import random, phrases
 
 class Book(object):
     """docstring for Book."""
 
-    def __init__(self, length, dictionary, output_file):
+    def __init__(self, l):
         super(Book, self).__init__()
-        self.intended_length = length
-        self.articles = dictionary["articles"]
-        self.nouns = dictionary["nouns"]
-        self.prepositions = dictionary["prepositions"]
-        self.adjectives = dictionary["adjectives"]
-        self.verbs = dictionary["verbs"]
-        self.output_file = open(output_file, "w")
+        self.volume_length = l
+        self.volume_num = 1
+        self.num_volumes = 15
+        self.total_length = 0
 
     def generate(self):
         """generate book"""
-        chapter_num = 1
+        for i in range(self.num_volumes):
+            self.gen_volume()
+        print("Printing complete.")
+        print("Total length of {0} words.".format(self.total_length))
+
+    def gen_volume(self):
+        """generate volume"""
+        output_file = open("output/vol{0}.html".format(self.volume_num), "w")
         book = ""
         real_length = 0
-        while real_length < self.intended_length:
+        book += "<html><body style='font-size: 7pt'>"
+        while real_length < self.volume_length:
             chapter = self.gen_chapter()
-            book += "<h1>Chapter {0}</h1>\n".format(chapter_num)
             book += "<p>{0}</p>\n".format(chapter)
-            book += "<mbp:pagebreak />\n"
-            chapter_num += 1
             real_length += len(chapter.split(" "))
-        self.output_file.write(book)
-        self.output_file.close()
-        return len(book.split(" "))
+        book += "</body></html>"
+        output_file.write(book)
+        output_file.close()
+        self.total_length += real_length
+        print("Printed volume {0}".format(self.volume_num))
+        self.volume_num += 1
+
 
     def gen_chapter(self):
         """generate chapter"""
@@ -53,44 +59,10 @@ class Book(object):
     def gen_paragraph(self):
         """generate paragraph"""
         num_sentences = random.randrange(5, 8)
-        sentences = [self.gen_sentence() for i in range(num_sentences)]
+        sentences = [str(phrases.Sentence()) for i in range(num_sentences)]
         return "<p>{0}</p>".format(" ".join(sentences))
-
-    def gen_sentence(self):
-        """generate sentence"""
-        noun_phrase = self.gen_noun_phrase()
-        verb_phrase = self.gen_verb_phrase()
-        return "{0} {1}.".format(noun_phrase, verb_phrase).capitalize()
-
-    def gen_noun_phrase(self):
-        """generate noun phrase"""
-        article = random.choice(self.articles)
-        adjective = random.choice(self.adjectives)
-        noun = random.choice(self.nouns)
-        return "{0} {1} {2}".format(article, adjective, noun)
-
-    def gen_prep_phrase(self):
-        """generate prepositional phrase"""
-        preposition = random.choice(self.prepositions)
-        noun_phrase = self.gen_noun_phrase()
-        return "{0} {1}".format(preposition, noun_phrase)
-
-    def gen_verb_phrase(self):
-        """generate noun phrase"""
-        verb = random.choice(self.verbs)
-        noun_phrase = self.gen_noun_phrase()
-        prep_phrase = self.gen_prep_phrase()
-        return "{0} {1} {2}".format(verb, noun_phrase, prep_phrase)
-
 
 if __name__ == '__main__':
     random.seed(1234567890)
-    DICTIONARY = {
-        "articles": ["a", "the"],
-        "nouns": ["cat", "dog", "squid", "man", "cow", "boy", "girl"],
-        "prepositions": ["in", "on", "from", "near"],
-        "adjectives": ["red", "green", "fast", "slow", "talented"],
-        "verbs": ["ate", "drank", "watched", "read", "wrote", "eats", "dreamed"]
-    }
-    DUREE = Book(335000, DICTIONARY, "output.html")
-    print(DUREE.generate())
+    DUREE = Book(800000)
+    DUREE.generate()
