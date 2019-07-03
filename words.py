@@ -40,7 +40,7 @@ class Verb(Word):
         penult = self.val[-2]
         ult = self.val[-1]
         if penult in VOWELS and ult not in VOWELS:
-            return self.val + ult + "ed"
+            return str(Verb())
         elif penult in VOWELS and ult == "y":
             return self.val + "ed"
         elif penult not in VOWELS and ult == "y":
