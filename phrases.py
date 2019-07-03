@@ -11,15 +11,11 @@ TODO:
  http://www.ashley-bovan.co.uk/words/partsofspeech.html
 
 """
-import random
+import random, words
 
 #all regular and singular, for now
 C_CONJ = ["and", "but", "for", "or", "so", "yet"] # Coordinating conjunctions
 DETERMINERS = ["the", "this", "that", "my", "your", "his", "her", "its", "our", "their", "one", "each", "every", "another"] #https://www.ef.com/ca/english-resources/english-grammar/determiners/
-ADJECTIVES = ["different", "important", "every", "large", "available", "popular", "able", "basic", "known", "difficult", "hot", "red", "orange", "yellow", "green", "blue", "purple", "traditional", "old", "young", "cold"]
-ADVERBS = ["angrily", "accidentally", "anxiously", "coyly", "boldly", "honestly", "justly", "madly", "mysteriously"]
-NOUNS = ["people", "history", "way", "art", "world", "information", "map", "family", "government", "system", "computer", "meat", "year", "person"]
-VERBS = ["wanted", "used", "worked", "called", "tried", "asked", "needed", "helped", "talked", "moved", "played", "believed", "dreamed", "liked"]
 
 class Phrase(object):
     """docstring for Phrase."""
@@ -41,15 +37,15 @@ class NounPhrase(Phrase):
         super(NounPhrase, self).__init__()
         self.num_adjectives = random.randrange(0,4) #arbitary 4?
         self.num_adverbs = random.randrange(0,2) if self.num_adjectives else 0
-        self.noun = random.choice(NOUNS)
+        self.noun = str(words.Noun())
         self.populate()
 
     def generate_adjectives(self):
-        self.adjectives = random.sample(ADJECTIVES, self.num_adjectives)
+        self.adjectives = [str(words.Adjective()) for i in range(self.num_adjectives)]
         self.words = self.adjectives + self.words
 
     def generate_adverbs(self):
-        self.adverbs = random.sample(ADVERBS, self.num_adverbs)
+        self.adverbs = [str(words.Adverb()) for i in range(self.num_adverbs)]
         self.words = self.adverbs + self.words
 
     def generate_determiner(self):
@@ -70,13 +66,13 @@ class VerbPhrase(Phrase):
 
     def __init__(self):
         super(VerbPhrase, self).__init__()
-        self.verb = random.choice(VERBS)
+        self.verb = str(words.Verb())
         self.num_adverbs = random.randrange(0,2)
         self.noun_phrase = str(NounPhrase())
         self.populate()
 
     def generate_adverbs(self):
-        self.adverbs = random.sample(ADVERBS, self.num_adverbs)
+        self.adverbs = [str(words.Adverb()) for i in range(self.num_adverbs)]
         self.words += self.adverbs
 
     def populate(self):
